@@ -115,7 +115,7 @@ nodes:
 
 ## Para saber mais sobre Kubernetes, containers e instalações de componentes em outros sistemas operacionais, consulte o Livro Gratuito Descomplicando o Kubernetes.
 
-https://livro.descomplicandokubernetes.com.br/?utm_medium=social&utm_source=linktree&utm_campaign=livro+descomplicando+o+kubernetes+gratuito
+[Descomplicando o Kubernetes - Livro Gratuito](https://livro.descomplicandokubernetes.com.br/?utm_medium=social&utm_source=linktree&utm_campaign=livro+descomplicando+o+kubernetes+gratuito)
 
 No contexto do Kubernetes, o crescimento horizontal e vertical referem-se à escala de um cluster para lidar com a demanda de recursos ou carga de trabalho.
 
