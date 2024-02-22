@@ -1,0 +1,61 @@
+service:
+  port: 8080
+  type: ClusterIP
+  targetPort: 8080
+  selector:
+    app: giropops-senhas
+replicas:
+  min: 2
+  max: 4
+resources:
+  requests:
+    cpu: "200m"
+    memory: "192Mi"
+  limits:
+    cpu: "400m"
+    memory: "512Mi"
+image:
+  repository:  linuxtips/giropops-senhas
+  tag: latest
+env:
+  - name: REDIS_HOST
+    value: redis-service
+imagePullPolicy: Always
+    
+redis:
+  service:
+    port: 6379
+    type: ClusterIP
+    targetPort: 6379
+  resources:
+    limits:
+      memory: "256Mi"
+      cpu: "500m"
+    requests:
+      memory: "128Mi"
+      cpu: "250m"
+  image:
+    repository: redis
+    tag: latest
+
+ingress:
+  ingressClassName: ""
+  enabled: false
+  name: giropops-senhas
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    cert-manager.io/cluster-issuer: "letsencrypt"
+  tls:
+    - hosts:
+        - giropops-senhas.io
+      secretName: giropo-senhas-tls
+  rules:
+        http:
+          paths:
+            - path: /
+              pathType: Prefix
+              backend:
+                service:
+                  name: giropops-senhas
+                  port:
+                    number: 80
