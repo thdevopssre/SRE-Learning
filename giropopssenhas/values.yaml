@@ -1,12 +1,12 @@
 service:
-  port: 8080
+  port: 5000
   type: ClusterIP
-  targetPort: 8080
+  targetPort: 5000
   selector:
     app: giropops-senhas
 replicas:
-  min: 2
-  max: 4
+  min: 1
+  max: 2
 resources:
   requests:
     cpu: "200m"
@@ -27,6 +27,9 @@ redis:
     port: 6379
     type: ClusterIP
     targetPort: 6379
+  replicas:
+    min: 1
+    max: 2
   resources:
     limits:
       memory: "256Mi"
@@ -44,18 +47,18 @@ ingress:
   name: giropops-senhas
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
-    cert-manager.io/cluster-issuer: "letsencrypt"
-  tls:
-    - hosts:
-        - giropops-senhas.io
-      secretName: giropo-senhas-tls
-  rules:
-        http:
-          paths:
-            - path: /
-              pathType: Prefix
-              backend:
-                service:
-                  name: giropops-senhas
-                  port:
-                    number: 80
+    cert-manager.io/cluster-issuer: "letsencrypt-production"
+tls:
+ - hosts:
+    - giropops-senhas.linuxtips.com
+   secretName: giropops-senhas-tls
+rules:
+- http:
+    paths:
+    - path: /
+      pathType: Prefix
+      backend:
+        service: 
+          name: giropops-senhas
+          port:
+            number: 80

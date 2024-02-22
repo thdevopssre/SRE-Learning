@@ -18,7 +18,7 @@ spec:
       - name: {{ .Chart.Name }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         ports:
-        - containerPort: 80
+        - containerPort: 5000
           name: giropops-senhas
         env:
         - name: REDIS_HOST
@@ -30,30 +30,3 @@ spec:
           limits:
             cpu: "{{ .Values.resources.limits.cpu }}"
             memory: "{{ .Values.resources.limits.memory }}"
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: {{ .Release.Name }}-redis-deployment
-spec:
-  selector:
-    matchLabels:
-      app: {{ .Release.Name }}-redis
-  template:
-    metadata:
-      labels:
-        app: {{ .Release.Name }}-redis
-    spec:
-      containers:
-      - name: {{ .Chart.Name }}-redis
-        image: "{{ .Values.redis.image.repository }}:{{ .Values.redis.image.tag }}"
-        ports:
-        - containerPort: 6379
-          name: redis
-        resources:
-          requests:
-            cpu: "{{ .Values.redis.resources.requests.cpu }}"
-            memory: "{{ .Values.redis.resources.requests.memory }}"
-          limits:
-            cpu: "{{ .Values.redis.resources.limits.cpu }}"
-            memory: "{{ .Values.redis.resources.limits.memory }}"

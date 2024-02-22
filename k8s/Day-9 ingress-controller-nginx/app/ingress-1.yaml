@@ -4,16 +4,11 @@ metadata:
   name: giropops-senhas
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
-    cert-manager.io/cluster-issuer: "letsencrypt-prod"
 spec:
   ingressClassName: nginx
-  tls:
-  - hosts:
-    - thlinux.devopsmt.com.br
-    secretName: thlinux.devopsmt-tls
-  rules:
-  - host: thlinux.devopsmt.com.br
-    http:
+  spec:
+    rules:
+    - http:
       paths:
       - path: /
         pathType: Prefix
