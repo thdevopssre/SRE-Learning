@@ -17,7 +17,7 @@ spec:
         ports:
         - containerPort: 6379
           name: redis
-        replicas: "{{ .Values.replicas.min }}"
+        replicas: "{{ .Values.redis.replicas }}"
         resources:
           requests:
             cpu: "{{ .Values.redis.resources.requests.cpu }}"

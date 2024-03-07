@@ -2,29 +2,22 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ .Values.ingress.name }}
+  name: {{ include "giropopssenhas.fullname" . }}
+  labels:
+    {{- include "giropopssenhas.labels" . | nindent 4 }}
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
-    cert-manager.io/cluster-issuer: {{ .Values.ingress.annotations.certManagerClusterIssuer }}
 spec:
-  ingressClassName: {{ .Values.ingress.ingressClassName }}
+  ingressClassName:
+spec:
   rules:
-    {{- range .Values.ingress.hosts }}
-    - host: {{ . }}
-      http:
-        paths:
-          - path: /giropops-senhas
-            pathType: Prefix
-            backend:
-              service:
-                name: {{ $.Release.Name }}-giropopssenhas
-                port:
-                  number: {{ .Values.giropopssenhas.service.port }}
-    {{- end }}
-  tls:
-    {{- range .Values.ingress.hosts }}
-    - hosts:
-        - {{ . }}
-      secretName: {{ . }}-giropops-tls
-    {{- end }}
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ include "giropopssenhas.fullname" . }}
+            port:
+              number: {{ .Values.service.port }}
 {{ end }}

@@ -1,32 +1,35 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-giropopssenhas
+  name: {{ include "giropopssenhas.fullname" . }}
   labels:
-    app: {{ .Release.Name }}-giropopssenhas
+    nope: {{ .Release.Name }}
+    {{- include "giropopssenhas.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicas.min }}
   selector:
     matchLabels:
-      app: {{ .Release.Name }}-giropopssenhas
+      app: {{ include "giropopssenhas.fullname" . }}
   template:
     metadata:
       labels:
-        app: {{ .Release.Name }}-giropopssenhas
+        app: {{ include "giropopssenhas.fullname" . }}
     spec:
       containers:
-      - name: {{ .Chart.Name }}
-        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-        ports:
-        - containerPort: 5000
-          name: giropops-senhas
-        env:
-        - name: REDIS_HOST
-          value: redis-service
-        resources:
-          requests:
-            cpu: "{{ .Values.resources.requests.cpu }}"
-            memory: "{{ .Values.resources.requests.memory }}"
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: giropops-senhas
+              containerPort: 80
+              protocol: TCP
+          env:
+            - name: REDIS_HOST
+              value: redis-service
+          resources:
+            requests:
+              cpu: "{{ .Values.resources.requests.cpu }}"
+              memory: "{{ .Values.resources.requests.memory }}"
           limits:
             cpu: "{{ .Values.resources.limits.cpu }}"
             memory: "{{ .Values.resources.limits.memory }}"
